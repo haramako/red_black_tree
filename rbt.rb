@@ -43,6 +43,14 @@ class RedBlackTree
     end
   end
 
+  def [](key)
+    find_node(key)&.value
+  end
+
+  def []=(key, value)
+    find_node(key, create: true).value = value
+  end
+  
   def each(&block)
     return enum_for(:each) unless block
     
