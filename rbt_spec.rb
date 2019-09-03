@@ -20,6 +20,8 @@ describe RedBlackTree do
       t[2] = 2
       expect(t[1]).to eq(1)
       expect(t[2]).to eq(2)
+      t[1] = 3
+      expect(t[1]).to eq(3)
     end
   end
 
@@ -30,5 +32,7 @@ describe RedBlackTree do
       t[i] = i
     end
     expect(t.each.to_a.map{|x| x[0]}).to eq((0..100).to_a)
+    depth = t.depth
+    expect(depth[0] * 2 >= depth[1]).to be_truthy
   end
 end
