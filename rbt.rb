@@ -43,6 +43,18 @@ class RedBlackTree
     end
   end
 
+  def each(&block)
+    return enum_for(:each) unless block
+    
+    each_(@root, block) if @root
+  end
+
+  def each_(node, block)
+    each_(node.left, block) if node.left
+    block.call [node.key, node.value]
+    each_(node.right, block) if node.right
+  end
+
   def dump
     @root&.dump
   end

@@ -10,5 +10,5 @@ t.insert(2, 2)
 t.insert(4, 4)
 
 pp t.dump
-
+pp t.each.to_a
 
