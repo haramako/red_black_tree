@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'benchmark'
 require './rbt'
 
-
+# Hashに足りないメソッドを足す
 class Hash
   def range(range)
-    self.select{|k,v| range.include?(k)}
+    self.select { |k, _v| range.include?(k) }
   end
 end
 
-N = 100000
+N = 100_000
 
 puts 'benchamrk add'
 Benchmark.bm(20) do |x|

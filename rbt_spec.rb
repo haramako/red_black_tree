@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require './rbt'
 describe RedBlackTree do
-  
   def make_tree(seq)
     t = RedBlackTree.new
     seq.each do |n|
@@ -8,21 +9,21 @@ describe RedBlackTree do
     end
     t
   end
-  
+
   describe 'empty tree' do
-    let(:tree){ RedBlackTree.new }
-    
+    let(:tree) { RedBlackTree.new }
+
     it '#each returns empty enumrator' do
       expect(tree.each.to_a).to eq([])
     end
-    
+
     it '#[] returns nil' do
       expect(tree[1]).to be_nil
     end
   end
 
   describe 'insert' do
-    let(:t){ RedBlackTree.new }
+    let(:t) { RedBlackTree.new }
 
     it 'insert and get' do
       t[1] = 1
@@ -40,28 +41,28 @@ describe RedBlackTree do
     rand_array.each do |i|
       t[i] = i
     end
-    expect(t.each.to_a.map{|x| x[0]}).to eq((0..100).to_a)
+    expect(t.each.to_a.map { |x| x[0] }).to eq((0..100).to_a)
     depth = t.depth
     expect(depth[0] * 2 >= depth[1]).to be_truthy
   end
 
   describe 'delete' do
     it 'delete' do
-      t = make_tree([1,2])
+      t = make_tree([1, 2])
       t.delete(1)
       expect(t[1]).to eq(nil)
       expect(t[2]).to eq(2)
     end
 
     it 'delete' do
-      t = make_tree([1,2])
+      t = make_tree([1, 2])
       t.delete(2)
       expect(t[1]).to eq(1)
       expect(t[2]).to eq(nil)
     end
 
     it 'delete' do
-      t = make_tree([1,2,3])
+      t = make_tree([1, 2, 3])
       pp t.dump
       t.delete(2)
       expect(t[1]).to eq(1)
@@ -78,7 +79,6 @@ describe RedBlackTree do
         expect(t[n]).to eq(nil)
       end
     end
-    
   end
 
   describe '#range' do
@@ -89,5 +89,4 @@ describe RedBlackTree do
       expect(t.range(4..9).to_a.size).to eq(2)
     end
   end
-  
 end

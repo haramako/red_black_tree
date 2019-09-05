@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require './rbt'
 require 'pp'
-
 
 t = RedBlackTree.new
 
@@ -11,4 +12,3 @@ t.insert(4, 4)
 
 pp t.dump
 pp t.each.to_a
-

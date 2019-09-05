@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # See: http://wwwa.pikara.ne.jp/okojisan/rb-tree/index.html
 class RedBlackTree
   def initialize
@@ -14,7 +16,7 @@ class RedBlackTree
     @root = insert(@root, key, value)
     @root.color = :black
   end
-  
+
   def delete(key)
     @root = delete_(@root, key)
     @root&.color = :black
@@ -22,32 +24,32 @@ class RedBlackTree
 
   def each(&block)
     return enum_for(:each) unless block
-    
+
     each_(@root, block) if @root
   end
 
   def range(range, &block)
     return enum_for(:range, range) unless block
-    
+
     range_(@root, range, block)
   end
 
   def dump
     @root&.dump
   end
-  
+
   def depth
     if @root
       depth_(@root)
     else
-      [0,0]
+      [0, 0]
     end
   end
 
   private
-  
+
   #===================================================
-  
+
   def find(node, key)
     if node.nil?
       nil
@@ -61,7 +63,10 @@ class RedBlackTree
   end
 
   #===================================================
-  
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
+
   def find_node(node, key)
     if node.nil?
       nil
@@ -73,25 +78,19 @@ class RedBlackTree
       find(node.right, key)
     end
   end
-  
+
   def range_(node, range, block)
     if node.nil?
-      return
+      nil
     else
-      if range.begin < node.key
-        range_(node.left, range, block)
-      end
-      if range.include? node.key
-        block.call node.key, node.value
-      end
-      if range.end > node.key
-        range_(node.right, range, block)
-      end
+      range_(node.left, range, block) if range.begin < node.key
+      block.call node.key, node.value if range.include? node.key
+      range_(node.right, range, block) if range.end > node.key
     end
   end
 
   #===================================================
-  
+
   def insert(node, key, value)
     if node.nil?
       @changed = true
@@ -110,7 +109,7 @@ class RedBlackTree
 
   def balanced(node)
     return node if !@changed || !node.black?
-      
+
     if node.left&.red? && node.left&.left&.red?
       # puts 'r'
       node = node.rotate_r
@@ -174,8 +173,8 @@ class RedBlackTree
   end
 
   def balance_deleted_l(node)
-    return node if !@changed
-    
+    return node unless @changed
+
     old_col = node.color
     if node.right&.black? && node&.right&.left&.red?
       node = node.rotate_rl
@@ -201,13 +200,13 @@ class RedBlackTree
     else
       raise
     end
-    
+
     node
   end
 
   def balance_deleted_r(node)
-    return node if !@changed
-    
+    return node unless @changed
+
     old_col = node.color
     if node.left&.black? && node&.left&.right&.red?
       node = node.rotate_lr
@@ -233,14 +232,17 @@ class RedBlackTree
     else
       raise
     end
-    
+
     node
   end
-  
+
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
   #===================================================
-    
+
   def depth_(node)
-    return [0,0] unless node
+    return [0, 0] unless node
+
     dl = depth_(node.left)
     dr = depth_(node.right)
     [[dl[0], dr[0]].min + 1, [dl[1], dr[1]].max + 1]
@@ -251,9 +253,9 @@ class RedBlackTree
     block.call [node.key, node.value]
     each_(node.right, block) if node.right
   end
-
 end
 
+# 赤黒木のノード
 class Node
   attr_accessor :key
   attr_accessor :value
@@ -275,7 +277,7 @@ class Node
   end
 
   def leaf?
-    @left == nil && @right == nil
+    @left.nil? && @right.nil?
   end
 
   def dump
@@ -311,5 +313,4 @@ class Node
     @right = @right.rotate_r
     rotate_l
   end
-  
 end
